@@ -1,3 +1,4 @@
 class Toy < ApplicationRecord
-  belings_to :user
+  belongs_to :user
+  validates :name, presence: true
 end

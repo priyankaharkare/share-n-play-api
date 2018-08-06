@@ -1,5 +1,5 @@
-class ToysController < ApplicationController
-  before_action :set_toy, only: [:show, :update, :destroy]
+class ToysController < OpenReadController
+  before_action :set_toy, only: %i[show update destroy]
 
   # GET /toys
   def index
@@ -10,15 +10,15 @@ class ToysController < ApplicationController
 
   # GET /toys/1
   def show
-    render json: @toy
+    render json: Toy.find(params[:id])
   end
 
   # POST /toys
   def create
-    @toy = Toy.new(toy_params)
+    @toy = current_user.toys.build(toy_params)
 
     if @toy.save
-      render json: @toy, status: :created, location: @toy
+      render json: @toy, status: :created
     else
       render json: @toy.errors, status: :unprocessable_entity
     end
@@ -41,11 +41,11 @@ class ToysController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_toy
-      @toy = Toy.find(params[:id])
+      @toy = current_user.toys.find(params[:id])
     end
 
     # Only allow a trusted parameter "white list" through.
     def toy_params
-      params.require(:toy).permit(:name, :description)
+      params.require(:toy).permit(:name, :description, :is_available, :user_id)
     end
 end
