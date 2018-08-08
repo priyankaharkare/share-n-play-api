@@ -2,5 +2,6 @@
 
 class User < ApplicationRecord
   include Authentication
-  has_many :toys
+  has_many :toys_users
+  has_many :toys, through: :toys_users
 end
