@@ -1,5 +1,5 @@
 class ToysController < OpenReadController
-  before_action :set_toy, only: %i[show update destroy]
+  before_action :set_toy, only: %i[show destroy]
 
   # GET /toys
   def index
@@ -26,6 +26,7 @@ class ToysController < OpenReadController
 
   # PATCH/PUT /toys/1
   def update
+    @toy = Toy.find(params[:id])
     if @toy.update(toy_params)
       render json: @toy
     else
